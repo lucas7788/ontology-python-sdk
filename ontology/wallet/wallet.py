@@ -49,7 +49,9 @@ class WalletData(object):
 
     @staticmethod
     def load(wallet_path):
-        r = json.load(open(wallet_path, "r"), object_hook=lambda d: namedtuple('X', d.keys())(*d.values()))
+        wallet_file = open(wallet_path, "r")
+        r = json.load(wallet_file, object_hook=lambda d: namedtuple('X', d.keys())(*d.values()))
+        wallet_file.close()
         scrypt = Scrypt(r.scrypt.n, r.scrypt.r, r.scrypt.p, r.scrypt.dk_len)
         identities = []
 
@@ -81,7 +83,9 @@ class WalletData(object):
         return res
 
     def save(self, wallet_path):
-        json.dump(self, open(wallet_path, "w"), default=lambda obj: obj.__dict__, indent=4)
+        file = open(wallet_path, "w")
+        json.dump(self, file, default=lambda obj: obj.__dict__, indent=4)
+        file.close()
         f = open(wallet_path, 'r+')
         s = f.read()
         while "enc_alg" in s:
