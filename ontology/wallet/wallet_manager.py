@@ -173,7 +173,7 @@ class WalletManager(object):
         info.address_u160 = acct.get_address().to_array().hex()
         return info
 
-    def create_account_from_prikey(self, label: str, pwd: str, private_key):
+    def create_account_from_prikey(self, label: str, pwd: str, private_key: bytearray):
         salt = get_random_bytes(16)
         info = self.create_account_info(label, pwd, salt, private_key)
         for index in range(len(self.wallet_in_mem.accounts)):
