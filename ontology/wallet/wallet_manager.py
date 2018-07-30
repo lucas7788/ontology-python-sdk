@@ -38,7 +38,9 @@ class WalletManager(object):
         return res
 
     def save(self, wallet_path):
-        json.dump(self.wallet_in_mem, open(wallet_path, "w"), default=lambda obj: obj.__dict__, indent=4)
+        file = open(wallet_path, "w")
+        json.dump(self.wallet_in_mem, file, default=lambda obj: obj.__dict__, indent=4)
+        file.close()
         f = open(wallet_path, 'r+')
         s = f.read()
         while "enc_alg" in s:
